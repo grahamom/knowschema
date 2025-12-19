@@ -18,38 +18,30 @@ jobs:
         with:
           php-version: '8.0'
 
-      - name: Install dependencies
-        run: composer install --no-dev --optimize-autoloader
-
       - name: Build Zip File
         run: |
-          # Create a build directory
-          mkdir build
-          mkdir build/knowschema
+          # 1. Create a clean export using git archive
+          # This puts all tracked files into a folder named 'knowschema' inside the archive
+          git archive --format=tar --prefix=knowschema/ HEAD | (mkdir -p build && cd build && tar xf -)
 
-          # Copy necessary files/folders to build directory
-          # We exclude dev files like .git, tests, .github, composer.json (dev), etc.
-          rsync -av --progress ./ build/knowschema/ \
-            --exclude '.git' \
-            --exclude '.github' \
-            --exclude 'tests' \
-            --exclude 'node_modules' \
-            --exclude '.gitignore' \
-            --exclude '.DS_Store' \
-            --exclude 'composer.json' \
-            --exclude 'composer.lock' \
-            --exclude 'phpunit.xml.dist' \
-            --exclude 'BRIEFING.md' \
-            --exclude 'build' \
-            --exclude 'README.md' \
-            --exclude 'LICENSE'
+          # 2. Install production dependencies inside the build folder
+          cd build/knowschema
+          composer install --no-dev --optimize-autoloader
 
-          # Copy README and LICENSE specifically if needed (often needed for WP.org but inside the folder)
-          cp README.md build/knowschema/
-          cp LICENSE build/knowschema/
+          # 3. Cleanup unnecessary dev files that might have been tracked (just in case) or generated
+          # We remove tests, CI configs, dev docs from the final zip
+          rm -rf tests
+          rm -rf .github
+          rm -rf .gitignore
+          rm -rf .DS_Store
+          rm -rf BRIEFING.md
+          rm -rf phpunit.xml.dist
+          
+          # Remove composer files if you don't want them, but usually keeping composer.json is fine.
+          # We will keep them for reference, but remove the cache if any.
 
-          # Zip the folder
-          cd build
+          # 4. Zip it up
+          cd ..
           zip -r knowschema.zip knowschema
 
       - name: Upload Artifact
