@@ -17,6 +17,12 @@ class Template_Event {
 		$url = get_permalink( $post_id );
 		$home_url = home_url( '/' );
 
+		// Ensure Template_Organization is loaded
+		if ( ! class_exists( 'KnowSchema\Schema\Templates\Template_Organization' ) ) {
+			require_once plugin_dir_path( __FILE__ ) . 'class-template-organization.php';
+		}
+		$organizer_id = \KnowSchema\Schema\Templates\Template_Organization::get_publisher_id();
+
 		$event = array(
 			'@type' => 'Event',
 			'@id'   => $url . '#event',
@@ -33,7 +39,7 @@ class Template_Event {
 			'image' => array( get_the_post_thumbnail_url( $post_id, 'full' ) ),
 			'description' => get_the_excerpt( $post_id ),
 			'organizer' => array(
-				'@id' => $home_url . '#organization',
+				'@id' => $organizer_id,
 			)
 		);
 

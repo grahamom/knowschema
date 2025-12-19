@@ -32,6 +32,12 @@ class Template_Product {
 		$url = get_permalink( $post_id );
 		$home_url = home_url( '/' );
 
+		// Ensure Template_Organization is loaded
+		if ( ! class_exists( 'KnowSchema\Schema\Templates\Template_Organization' ) ) {
+			require_once plugin_dir_path( __FILE__ ) . 'class-template-organization.php';
+		}
+		$seller_id = \KnowSchema\Schema\Templates\Template_Organization::get_publisher_id();
+
 		return array(
 			'@type' => 'Product',
 			'@id'   => $url . '#product',
@@ -50,7 +56,7 @@ class Template_Product {
 				'priceCurrency' => ! empty( $data['currency'] ) ? $data['currency'] : 'USD',
 				'availability'  => ! empty( $data['availability'] ) ? $data['availability'] : 'https://schema.org/InStock',
 				'seller' => array(
-					'@id' => $home_url . '#organization',
+					'@id' => $seller_id,
 				)
 			)
 		);

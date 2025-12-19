@@ -14,6 +14,12 @@ class Template_Article {
 		$author_id = get_post_field( 'post_author', $post_id );
 		$author_url = get_author_posts_url( $author_id );
 
+		// Ensure Template_Organization is loaded for the helper
+		if ( ! class_exists( 'KnowSchema\Schema\Templates\Template_Organization' ) ) {
+			require_once plugin_dir_path( __FILE__ ) . 'class-template-organization.php';
+		}
+		$publisher_id = \KnowSchema\Schema\Templates\Template_Organization::get_publisher_id();
+
 		return array(
 			'@type' => 'Article',
 			'@id'   => $url . '#article',
@@ -30,7 +36,7 @@ class Template_Article {
 				'@id' => $author_url . '#person', // Linking to Person node
 			),
 			'publisher' => array(
-				'@id' => $home_url . '#organization',
+				'@id' => $publisher_id,
 			),
 			'image' => array(
 				'@id' => $url . '#primaryimage',
