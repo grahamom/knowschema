@@ -40,6 +40,15 @@ class Admin_Pages {
 			'knowschema-audit',
 			array( $this, 'display_audit_page' )
 		);
+
+		add_submenu_page(
+			'knowschema',
+			'Import / Export',
+			'Import / Export',
+			'manage_options',
+			'knowschema-tools',
+			array( $this, 'display_tools_page' )
+		);
 		
 		// Note: The CPT 'ks_entity' will add itself here if show_in_menu is set to 'knowschema'
 		// But show_in_menu = 'knowschema' requires the parent menu to be registered first.
@@ -65,6 +74,12 @@ class Admin_Pages {
 		require_once plugin_dir_path( __FILE__ ) . 'class-audit-page.php';
 		$audit = new Audit_Page( $this->plugin_name, $this->version );
 		$audit->display();
+	}
+
+	public function display_tools_page() {
+		require_once plugin_dir_path( __FILE__ ) . 'class-import-export-page.php';
+		$tools = new Import_Export_Page( $this->plugin_name, $this->version );
+		$tools->display();
 	}
 
 	public function register_settings() {
