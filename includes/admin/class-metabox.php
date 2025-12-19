@@ -103,6 +103,19 @@ class Metabox {
 		echo '</div>';
 
 		echo '<p><em>' . __( 'More fields will appear here based on template selection.', 'knowschema' ) . '</em></p>';
+		
+		// AI Actions (Pro Placeholder)
+		echo '<div id="ks-ai-actions" style="margin-top:20px; padding:15px; background:#f0f0f1; border:1px dashed #ccc;">';
+		echo '<strong>' . __( 'AI Assistant', 'knowschema' ) . '</strong>';
+		
+		$ai_service = new \KnowSchema\AI\AI_Service();
+		if ( $ai_service->is_active() ) {
+			echo '<button type="button" class="button button-secondary" id="ks-ai-draft-btn">' . __( 'Draft Schema with AI', 'knowschema' ) . '</button>';
+		} else {
+			echo '<p style="margin-top:5px; margin-bottom:10px; font-size:12px;">' . __( 'Automate schema creation with AI. Upgrade to Pro to enable drafting.', 'knowschema' ) . '</p>';
+			echo '<button type="button" class="button button-secondary" disabled>' . __( 'Draft Schema with AI (Pro)', 'knowschema' ) . '</button>';
+		}
+		echo '</div>';
 	}
 
 	public function save_meta_box_data( $post_id ) {

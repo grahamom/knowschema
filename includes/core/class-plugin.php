@@ -96,6 +96,13 @@ class Plugin {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'schema/class-graph-builder.php';
 
+		/**
+		 * Interfaces for Pro extensions.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'ai/interface-ai-provider.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'ai/class-ai-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'wikidata/interface-wikidata-client.php';
+
 		$this->loader = new Loader();
 
 	}
