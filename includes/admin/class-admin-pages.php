@@ -105,6 +105,19 @@ class Admin_Pages {
 		);
 
 		add_settings_field(
+			'knowschema_primary_entity',
+			__( 'Primary Entity', 'knowschema' ),
+			array( $this, 'render_entity_select' ),
+			'knowschema',
+			'knowschema_main_section',
+			array(
+				'label_for' => 'knowschema_primary_entity',
+				'name'      => 'primary_entity_id',
+				'description' => __( 'Select the main Organization or Person entity for this site.', 'knowschema' ),
+			)
+		);
+
+		add_settings_field(
 			'knowschema_qid',
 			__( 'Wikidata QID', 'knowschema' ),
 			array( $this, 'render_text_field' ),
@@ -116,6 +129,24 @@ class Admin_Pages {
 				'description' => __( 'Enter the Wikidata QID (e.g., Q12345) for sameAs linking.', 'knowschema' ),
 			)
 		);
+	}
+
+	public function render_entity_select( $args ) {
+		$options = get_option( 'knowschema_options' );
+		$val     = isset( $options[ $args['name'] ] ) ? $options[ $args['name'] ] : '';
+		
+		$entities = get_posts( array( 'post_type' => 'ks_entity', 'posts_per_page' => -1 ) );
+		?>
+		<select id="<?php echo esc_attr( $args['label_for'] ); ?>" name="knowschema_options[<?php echo esc_attr( $args['name'] ); ?>]">
+			<option value=""><?php _e( 'None (Use Global Settings)', 'knowschema' ); ?></option>
+			<?php foreach ( $entities as $entity ) : ?>
+				<option value="<?php echo $entity->ID; ?>" <?php selected( $val, $entity->ID ); ?>><?php echo esc_html( $entity->post_title ); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<?php if ( ! empty( $args['description'] ) ) : ?>
+			<p class="description"><?php echo esc_html( $args['description'] ); ?></p>
+		<?php endif; ?>
+		<?php
 	}
 
 	public function render_text_field( $args ) {
@@ -133,6 +164,7 @@ class Admin_Pages {
 		$valid = array();
 		$valid['org_name'] = sanitize_text_field( $input['org_name'] );
 		$valid['qid']      = sanitize_text_field( $input['qid'] );
+		$valid['primary_entity_id'] = isset( $input['primary_entity_id'] ) ? intval( $input['primary_entity_id'] ) : 0;
 		return $valid;
 	}
 

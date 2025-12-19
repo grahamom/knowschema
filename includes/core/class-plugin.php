@@ -125,9 +125,12 @@ class Plugin {
 		
 		// AJAX Preview
 		$this->loader->add_action( 'wp_ajax_knowschema_preview_schema', $preview_panel, 'ajax_preview_schema' );
+		$this->loader->add_action( 'wp_ajax_knowschema_wikidata_plan', $preview_panel, 'ajax_wikidata_plan' );
 
 		// Register CPT
 		$this->loader->add_action( 'init', $entity_cpt, 'register_cpt' );
+		$this->loader->add_action( 'add_meta_boxes_ks_entity', $entity_cpt, 'add_meta_boxes' );
+		$this->loader->add_action( 'save_post_ks_entity', $entity_cpt, 'save_entity_data' );
 
 		// Add Admin Menu
 		$this->loader->add_action( 'admin_menu', $admin_pages, 'add_plugin_admin_menu' );

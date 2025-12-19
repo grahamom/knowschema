@@ -62,4 +62,33 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+    // Wikidata Edit Plan
+    $('#ks-wikidata-plan-btn').on('click', function() {
+        var $container = $('#ks-wikidata-plan-container');
+        var $btn = $(this);
+        var postId = $('#post_ID').val();
+
+        $btn.prop('disabled', true).text('Generating Plan...');
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'knowschema_wikidata_plan',
+                post_id: postId,
+                _ajax_nonce: knowschema_vars.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    $container.show().find('textarea').val(response.data.plan);
+                } else {
+                    alert('Error generating plan');
+                }
+            },
+            complete: function() {
+                $btn.prop('disabled', false).text('Export Edit Plan');
+            }
+        });
+    });
 });

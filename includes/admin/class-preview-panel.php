@@ -67,4 +67,38 @@ class Preview_Panel {
 		) );
 	}
 
+	public function ajax_wikidata_plan() {
+		check_ajax_referer( 'knowschema_preview_nonce' );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error( 'Permission denied' );
+		}
+
+		$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+		if ( ! $post_id ) {
+			wp_send_json_error( 'Invalid Post ID' );
+		}
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'entities/class-entity-repository.php';
+		$repo = new \KnowSchema\Entities\Entity_Repository();
+		$entity = $repo->get_entity( $post_id );
+
+		if ( ! $entity ) {
+			wp_send_json_error( 'Entity not found' );
+		}
+
+		$plan = "Wikidata Edit Plan for: " . $entity['name'] . "\n";
+		$plan .= "==========================================\n\n";
+		$plan .= "P31 (instance of): " . ( $entity['type'] === 'Person' ? 'Q5 (human)' : 'Q43229 (organization)' ) . "\n";
+		$plan .= "P856 (official website): " . $entity['url'] . "\n";
+		
+		if ( ! empty( $entity['sameAs'] ) ) {
+			foreach ( $entity['sameAs'] as $link ) {
+				$plan .= "P---- (sameAs/social): " . $link . "\n";
+			}
+		}
+
+		wp_send_json_success( array( 'plan' => $plan ) );
+	}
+
 }

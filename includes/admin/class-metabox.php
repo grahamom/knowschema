@@ -116,6 +116,16 @@ class Metabox {
 			echo '<button type="button" class="button button-secondary" disabled>' . __( 'Draft Schema with AI (Pro)', 'knowschema' ) . '</button>';
 		}
 		echo '</div>';
+
+		// Wikidata Edit Plan (Free)
+		if ( $post->post_type === 'ks_entity' ) {
+			echo '<div id="ks-wikidata-actions" style="margin-top:20px; padding:15px; background:#e7f5fe; border:1px solid #b8e6ff;">';
+			echo '<strong>' . __( 'Wikidata Integration', 'knowschema' ) . '</strong>';
+			echo '<p style="font-size:12px;">' . __( 'Generate a structured list of statements for Wikidata.', 'knowschema' ) . '</p>';
+			echo '<button type="button" class="button button-secondary" id="ks-wikidata-plan-btn">' . __( 'Export Edit Plan', 'knowschema' ) . '</button>';
+			echo '<div id="ks-wikidata-plan-container" style="display:none; margin-top:10px;"><textarea readonly style="width:100%; height:150px; font-size:11px;"></textarea></div>';
+			echo '</div>';
+		}
 	}
 
 	public function save_meta_box_data( $post_id ) {

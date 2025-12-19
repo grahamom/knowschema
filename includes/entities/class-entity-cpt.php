@@ -63,4 +63,71 @@ class Entity_CPT {
 		);
 		register_post_type( 'ks_entity', $args );
 	}
+
+	public function add_meta_boxes() {
+		add_meta_box(
+			'ks_entity_data',
+			__( 'Entity Data', 'knowschema' ),
+			array( $this, 'render_metabox' ),
+			'ks_entity',
+			'normal',
+			'high'
+		);
+	}
+
+	public function render_metabox( $post ) {
+		wp_nonce_field( 'ks_save_entity_data', 'ks_entity_nonce' );
+
+		$type = get_post_meta( $post->ID, '_ks_entity_type', true );
+		if ( ! $type ) { $type = 'Organization'; }
+		
+		$url = get_post_meta( $post->ID, '_ks_entity_url', true );
+		$qid = get_post_meta( $post->ID, '_ks_entity_qid', true );
+		$sameas = get_post_meta( $post->ID, '_ks_entity_sameas', true );
+
+		?>
+		<p>
+			<label for="ks_entity_type"><strong><?php _e( 'Entity Type', 'knowschema' ); ?></strong></label><br>
+			<select name="ks_entity_type" id="ks_entity_type" style="width:100%">
+				<option value="Organization" <?php selected( $type, 'Organization' ); ?>>Organization</option>
+				<option value="Person" <?php selected( $type, 'Person' ); ?>>Person</option>
+			</select>
+		</p>
+		<p>
+			<label for="ks_entity_url"><strong><?php _e( 'Official URL', 'knowschema' ); ?></strong></label><br>
+			<input type="url" name="ks_entity_url" id="ks_entity_url" value="<?php echo esc_attr( $url ); ?>" style="width:100%">
+		</p>
+		<p>
+			<label for="ks_entity_qid"><strong><?php _e( 'Wikidata QID', 'knowschema' ); ?></strong></label><br>
+			<input type="text" name="ks_entity_qid" id="ks_entity_qid" value="<?php echo esc_attr( $qid ); ?>" placeholder="e.g. Q12345" style="width:100%">
+		</p>
+		<p>
+			<label for="ks_entity_sameas"><strong><?php _e( 'SameAs Links (one per line)', 'knowschema' ); ?></strong></label><br>
+			<textarea name="ks_entity_sameas" id="ks_entity_sameas" rows="4" style="width:100%"><?php echo esc_textarea( is_array( $sameas ) ? implode( "\n", $sameas ) : $sameas ); ?></textarea>
+		</p>
+		<?php
+	}
+
+	public function save_entity_data( $post_id ) {
+		if ( ! isset( $_POST['ks_entity_nonce'] ) || ! wp_verify_nonce( $_POST['ks_entity_nonce'], 'ks_save_entity_data' ) ) {
+			return;
+		}
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( isset( $_POST['ks_entity_type'] ) ) {
+			update_post_meta( $post_id, '_ks_entity_type', sanitize_text_field( $_POST['ks_entity_type'] ) );
+		}
+		if ( isset( $_POST['ks_entity_url'] ) ) {
+			update_post_meta( $post_id, '_ks_entity_url', esc_url_raw( $_POST['ks_entity_url'] ) );
+		}
+		if ( isset( $_POST['ks_entity_qid'] ) ) {
+			update_post_meta( $post_id, '_ks_entity_qid', sanitize_text_field( $_POST['ks_entity_qid'] ) );
+		}
+		if ( isset( $_POST['ks_entity_sameas'] ) ) {
+			$sameas = array_filter( array_map( 'esc_url_raw', explode( "\n", str_replace( "\r", '', $_POST['ks_entity_sameas'] ) ) ) );
+			update_post_meta( $post_id, '_ks_entity_sameas', $sameas );
+		}
+	}
 }
