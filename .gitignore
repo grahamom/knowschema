@@ -1,0 +1,7 @@
+BRIEFING.md
+.idea/
+.vscode/
+.DS_Store
+node_modules/
+vendor/
+*.log
