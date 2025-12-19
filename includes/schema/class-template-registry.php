@@ -18,6 +18,10 @@ class Template_Registry {
 			'Organization'   => 'class-template-organization.php', // Note: Briefing listed it under templates folder but maybe didn't explicitly name the file "class-template-organization.php", implied by "Organization or Person" entities. I will create it.
 			'Person'         => 'class-template-person.php',
 			'BreadcrumbList' => 'class-template-breadcrumbs.php',
+			'FAQPage'        => 'class-template-faq.php',
+			'Review'         => 'class-template-review.php',
+			'Event'          => 'class-template-event.php',
+			'Product'        => 'class-template-product.php',
 		);
 
 		foreach ( $files as $key => $file ) {

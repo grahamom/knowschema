@@ -98,6 +98,15 @@ class Graph_Builder {
 				$nodes[] = $breadcrumbs_template->generate( $post_id );
 			}
 
+			// Include FAQ if it exists
+			$faq_template = $this->registry->get_template( 'FAQPage' );
+			if ( $faq_template ) {
+				$faq_node = $faq_template->generate( $post_id );
+				if ( ! empty( $faq_node ) ) {
+					$nodes[] = $faq_node;
+				}
+			}
+
 			// Author Person node (if Article)
 			if ( $selected_template === 'Article' ) {
 				$author_template = $this->registry->get_template( 'Person' );

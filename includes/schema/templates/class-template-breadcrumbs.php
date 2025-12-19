@@ -9,46 +9,34 @@ class Template_BreadcrumbList {
 			$post_id = get_the_ID();
 		}
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'class-breadcrumb-provider.php';
+		$provider = new \KnowSchema\Schema\Breadcrumb_Provider();
+		$breadcrumb_items = $provider->get_items( $post_id );
+
 		$url = get_permalink( $post_id );
-		
 		$items = array();
 		$position = 1;
 
-		// Home
-		$items[] = array(
-			'@type' => 'ListItem',
-			'position' => $position,
-			'name' => 'Home',
-			'item' => home_url( '/' )
-		);
-		$position++;
+		foreach ( $breadcrumb_items as $index => $breadcrumb ) {
+			$list_item = array(
+				'@type'    => 'ListItem',
+				'position' => $position,
+				'name'     => $breadcrumb['name'],
+			);
 
-		// Ancestors
-		$ancestors = get_post_ancestors( $post_id );
-		if ( $ancestors ) {
-			$ancestors = array_reverse( $ancestors );
-			foreach ( $ancestors as $ancestor ) {
-				$items[] = array(
-					'@type' => 'ListItem',
-					'position' => $position,
-					'name' => get_the_title( $ancestor ),
-					'item' => get_permalink( $ancestor )
-				);
-				$position++;
+			// Don't add 'item' for the last one (current page) per some recommendations, 
+			// though Google often accepts it. Briefing said "derived from breadcrumbs provider".
+			if ( $index < count( $breadcrumb_items ) - 1 ) {
+				$list_item['item'] = $breadcrumb['item'];
 			}
+
+			$items[] = $list_item;
+			$position++;
 		}
 
-		// Current Page
-		$items[] = array(
-			'@type' => 'ListItem',
-			'position' => $position,
-			'name' => get_the_title( $post_id ),
-			// 'item' => $url // Google recommends omitting 'item' for the last item
-		);
-
 		return array(
-			'@type' => 'BreadcrumbList',
-			'@id'   => $url . '#breadcrumbs',
+			'@type'           => 'BreadcrumbList',
+			'@id'             => $url . '#breadcrumbs',
 			'itemListElement' => $items,
 		);
 	}

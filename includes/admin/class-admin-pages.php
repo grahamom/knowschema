@@ -31,6 +31,15 @@ class Admin_Pages {
 			'knowschema',
 			array( $this, 'display_settings_page' )
 		);
+
+		add_submenu_page(
+			'knowschema',
+			'Site Audit',
+			'Site Audit',
+			'manage_options',
+			'knowschema-audit',
+			array( $this, 'display_audit_page' )
+		);
 		
 		// Note: The CPT 'ks_entity' will add itself here if show_in_menu is set to 'knowschema'
 		// But show_in_menu = 'knowschema' requires the parent menu to be registered first.
@@ -50,6 +59,12 @@ class Admin_Pages {
 			</form>
 		</div>
 		<?php
+	}
+
+	public function display_audit_page() {
+		require_once plugin_dir_path( __FILE__ ) . 'class-audit-page.php';
+		$audit = new Audit_Page( $this->plugin_name, $this->version );
+		$audit->display();
 	}
 
 	public function register_settings() {
@@ -73,6 +88,19 @@ class Admin_Pages {
 				'name'      => 'org_name',
 			)
 		);
+
+		add_settings_field(
+			'knowschema_qid',
+			__( 'Wikidata QID', 'knowschema' ),
+			array( $this, 'render_text_field' ),
+			'knowschema',
+			'knowschema_main_section',
+			array(
+				'label_for' => 'knowschema_qid',
+				'name'      => 'qid',
+				'description' => __( 'Enter the Wikidata QID (e.g., Q12345) for sameAs linking.', 'knowschema' ),
+			)
+		);
 	}
 
 	public function render_text_field( $args ) {
@@ -80,12 +108,16 @@ class Admin_Pages {
 		$val     = isset( $options[ $args['name'] ] ) ? $options[ $args['name'] ] : '';
 		?>
 		<input type="text" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="knowschema_options[<?php echo esc_attr( $args['name'] ); ?>]" value="<?php echo esc_attr( $val ); ?>">
+		<?php if ( ! empty( $args['description'] ) ) : ?>
+			<p class="description"><?php echo esc_html( $args['description'] ); ?></p>
+		<?php endif; ?>
 		<?php
 	}
 
 	public function validate_options( $input ) {
 		$valid = array();
 		$valid['org_name'] = sanitize_text_field( $input['org_name'] );
+		$valid['qid']      = sanitize_text_field( $input['qid'] );
 		return $valid;
 	}
 

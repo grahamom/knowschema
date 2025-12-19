@@ -9,7 +9,7 @@ class Template_Organization {
 		$options = get_option( 'knowschema_options' );
 		$org_name = ! empty( $options['org_name'] ) ? $options['org_name'] : get_bloginfo( 'name' );
 
-		return array(
+		$data = array(
 			'@type' => 'Organization',
 			'@id'   => $home_url . '#organization',
 			'url'   => $home_url,
@@ -19,5 +19,14 @@ class Template_Organization {
 				'url'   => get_site_icon_url( 512 ), // Simple fallback
 			)
 		);
+
+		if ( ! empty( $options['qid'] ) ) {
+			$qid = trim( $options['qid'] );
+			if ( strpos( $qid, 'Q' ) === 0 ) {
+				$data['sameAs'] = array( 'https://www.wikidata.org/wiki/' . $qid );
+			}
+		}
+
+		return $data;
 	}
 }

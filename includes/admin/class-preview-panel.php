@@ -45,7 +45,26 @@ class Preview_Panel {
 
 		$graph = $graph_builder->build_graph( $overrides );
 
-		wp_send_json_success( $graph );
+		// Run Validator
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'schema/class-validator.php';
+		$validator = new \KnowSchema\Schema\Validator();
+		
+		$main_node = array();
+		if ( ! empty( $graph['@graph'] ) ) {
+			foreach ( $graph['@graph'] as $node ) {
+				if ( isset( $node['@type'] ) && $node['@type'] === $template ) {
+					$main_node = $node;
+					break;
+				}
+			}
+		}
+
+		$readiness = $validator->check_readiness( $template, $main_node );
+
+		wp_send_json_success( array(
+			'graph'     => $graph,
+			'readiness' => $readiness
+		) );
 	}
 
 }

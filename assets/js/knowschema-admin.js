@@ -5,6 +5,12 @@ jQuery(document).ready(function($) {
     
     $('#knowschema_metabox .inside').append($previewBtn).append($previewContainer);
 
+    $('#knowschema_schema_template').on('change', function() {
+        var template = $(this).val();
+        $('.ks-group').hide();
+        $('.ks-group-' + template).show();
+    });
+
     $previewBtn.on('click', function() {
         var postId = $('#post_ID').val();
         var template = $('#knowschema_schema_template').val();
@@ -23,7 +29,30 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 if (response.success) {
-                    $previewContainer.show().find('textarea').val(JSON.stringify(response.data, null, 2));
+                    $previewContainer.show().find('textarea').val(JSON.stringify(response.data.graph, null, 2));
+                    
+                    // Update Badge
+                    var readiness = response.data.readiness;
+                    var $badge = $('#ks-readiness-badge');
+                    var $status = $badge.find('.ks-badge');
+                    var $list = $badge.find('.ks-missing-fields');
+                    
+                    $badge.show();
+                    $list.empty();
+                    
+                    if (readiness.status === 'green') {
+                        $status.text('Eligible for Rich Results').css('background', '#46b450');
+                    } else if (readiness.status === 'amber') {
+                        $status.text('Recommended Fields Missing').css('background', '#ffb900');
+                        readiness.missing_recommended.forEach(function(f) {
+                            $list.append('<li>Recommended: ' + f + '</li>');
+                        });
+                    } else {
+                        $status.text('Incomplete (Missing Required Fields)').css('background', '#dc3232');
+                        readiness.missing_required.forEach(function(f) {
+                            $list.append('<li>Required: ' + f + '</li>');
+                        });
+                    }
                 } else {
                     alert('Error generating preview');
                 }
