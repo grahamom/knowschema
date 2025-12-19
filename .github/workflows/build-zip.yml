@@ -44,6 +44,11 @@ jobs:
           cd ..
           zip -r knowschema.zip knowschema
 
+      - name: Verify Zip Structure
+        run: |
+          echo "Listing Zip Contents:"
+          unzip -l build/knowschema.zip
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:

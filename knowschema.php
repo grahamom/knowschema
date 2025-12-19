@@ -25,6 +25,13 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'KNOWSCHEMA_VERSION', '2.0.0' );
 
 /**
+ * Load Composer Autoloader if available.
+ */
+if ( file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+}
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/core/class-activator.php
  */
