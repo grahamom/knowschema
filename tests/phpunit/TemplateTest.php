@@ -3,14 +3,14 @@
 namespace KnowSchema\Tests;
 
 use PHPUnit\Framework\TestCase;
-use KnowSchema\Schema\Templates\Template_Website;
+use KnowSchema\Schema\Templates\Template_WebSite;
 use KnowSchema\Schema\Templates\Template_Organization;
 
 class TemplateTest extends TestCase {
 
 	public function test_website_template_structure() {
 		// Mock dependencies handled in bootstrap or here if needed
-		$template = new Template_Website();
+		$template = new Template_WebSite();
 		$output = $template->generate();
 
 		$this->assertIsArray( $output );
