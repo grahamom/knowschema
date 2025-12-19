@@ -53,13 +53,13 @@ jobs:
           zip -r knowschema.zip knowschema
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: knowschema-plugin
           path: build/knowschema.zip
 
       - name: Release
         if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: build/knowschema.zip
