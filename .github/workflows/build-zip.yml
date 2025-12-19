@@ -1,0 +1,65 @@
+name: Build Plugin Zip
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Zip
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Build Zip File
+        run: |
+          # Create a build directory
+          mkdir build
+          mkdir build/knowschema
+
+          # Copy necessary files/folders to build directory
+          # We exclude dev files like .git, tests, .github, composer.json (dev), etc.
+          rsync -av --progress ./ build/knowschema/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'tests' \
+            --exclude 'node_modules' \
+            --exclude '.gitignore' \
+            --exclude '.DS_Store' \
+            --exclude 'composer.json' \
+            --exclude 'composer.lock' \
+            --exclude 'phpunit.xml.dist' \
+            --exclude 'BRIEFING.md' \
+            --exclude 'build' \
+            --exclude 'README.md' \
+            --exclude 'LICENSE'
+
+          # Copy README and LICENSE specifically if needed (often needed for WP.org but inside the folder)
+          cp README.md build/knowschema/
+          cp LICENSE build/knowschema/
+
+          # Zip the folder
+          cd build
+          zip -r knowschema.zip knowschema
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: knowschema-plugin
+          path: build/knowschema.zip
+
+      - name: Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/knowschema.zip
