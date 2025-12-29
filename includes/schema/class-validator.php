@@ -22,6 +22,18 @@ class Validator {
 				'required' => array( 'headline', 'datePublished', 'author' ),
 				'recommended' => array( 'dateModified', 'image', 'publisher' ),
 			),
+			'Recipe' => array(
+				'required' => array( 'name', 'recipeIngredient', 'recipeInstructions' ),
+				'recommended' => array( 'prepTime', 'cookTime', 'image', 'recipeYield' ),
+			),
+			'SoftwareApplication' => array(
+				'required' => array( 'name', 'operatingSystem', 'applicationCategory' ),
+				'recommended' => array( 'offers', 'softwareVersion' ),
+			),
+			'VideoObject' => array(
+				'required' => array( 'name', 'thumbnailUrl', 'uploadDate' ),
+				'recommended' => array( 'description', 'duration', 'contentUrl', 'embedUrl' ),
+			),
 		);
 
 		return isset( $rules[ $template ] ) ? $rules[ $template ] : array( 'required' => array(), 'recommended' => array() );

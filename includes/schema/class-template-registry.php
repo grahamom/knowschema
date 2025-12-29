@@ -22,6 +22,9 @@ class Template_Registry {
 			'Review'         => 'class-template-review.php',
 			'Event'          => 'class-template-event.php',
 			'Product'        => 'class-template-product.php',
+			'Recipe'         => 'class-template-recipe.php',
+			'SoftwareApplication' => 'class-template-softwareapplication.php',
+			'VideoObject'    => 'class-template-videoobject.php',
 		);
 
 		foreach ( $files as $key => $file ) {

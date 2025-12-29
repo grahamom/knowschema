@@ -41,45 +41,71 @@ class Metabox {
 		echo '<option value="WebPage" ' . selected( $template, 'WebPage', false ) . '>WebPage</option>';
 		echo '<option value="Product" ' . selected( $template, 'Product', false ) . '>Product</option>';
 		echo '<option value="FAQPage" ' . selected( $template, 'FAQPage', false ) . '>FAQPage</option>';
-		echo '<option value="Review" ' . selected( $template, 'Review', false ) . '>Review</option>';
-		echo '<option value="Event" ' . selected( $template, 'Event', false ) . '>Event</option>';
-		echo '</select></p>';
-
-		echo '<div id="ks-readiness-badge" style="margin-bottom:15px; display:none;">';
-		echo '<span class="ks-badge" style="padding:5px 10px; border-radius:3px; color:#fff; font-weight:bold;"></span>';
-		echo '<ul class="ks-missing-fields" style="font-size:11px; margin-top:5px; color:#666;"></ul>';
-		echo '</div>';
-
-		// Template Specific Data
-		echo '<div id="ks-template-data" style="margin-top:20px;">';
+		        echo '<option value="Review" ' . selected( $template, 'Review', false ) . '>Review</option>';
+				echo '<option value="Event" ' . selected( $template, 'Event', false ) . '>Event</option>';
+				echo '<option value="Recipe" ' . selected( $template, 'Recipe', false ) . '>Recipe</option>';
+				echo '<option value="SoftwareApplication" ' . selected( $template, 'SoftwareApplication', false ) . '>Software Application</option>';
+				echo '<option value="VideoObject" ' . selected( $template, 'VideoObject', false ) . '>Video</option>';
+				echo '</select></p>';
 		
-		// Product Data
-		$product_data = get_post_meta( $post->ID, '_ks_product_data', true );
-		echo '<div class="ks-group ks-group-Product" style="display:' . ( $template === 'Product' ? 'block' : 'none' ) . ';">';
-		echo '<h4>' . __( 'Product Details', 'knowschema' ) . '</h4>';
-		echo '<p><input type="text" name="ks_product[sku]" value="' . esc_attr( isset( $product_data['sku'] ) ? $product_data['sku'] : '' ) . '" placeholder="SKU" style="width:100%"></p>';
-		echo '<p><input type="text" name="ks_product[price]" value="' . esc_attr( isset( $product_data['price'] ) ? $product_data['price'] : '' ) . '" placeholder="Price" style="width:48%"> ';
-		echo '<input type="text" name="ks_product[currency]" value="' . esc_attr( isset( $product_data['currency'] ) ? $product_data['currency'] : 'USD' ) . '" placeholder="Currency (USD)" style="width:48%"></p>';
-		echo '</div>';
-
-		// Review Data
-		$review_data = get_post_meta( $post->ID, '_ks_review_data', true );
-		echo '<div class="ks-group ks-group-Review" style="display:' . ( $template === 'Review' ? 'block' : 'none' ) . ';">';
-		echo '<h4>' . __( 'Review Details', 'knowschema' ) . '</h4>';
-		echo '<p><input type="number" name="ks_review[rating]" value="' . esc_attr( isset( $review_data['rating'] ) ? $review_data['rating'] : '5' ) . '" min="1" max="5" style="width:100px"> ' . __( 'Rating (1-5)', 'knowschema' ) . '</p>';
-		echo '<p><textarea name="ks_review[body]" placeholder="Review Summary" style="width:100%">' . esc_textarea( isset( $review_data['body'] ) ? $review_data['body'] : '' ) . '</textarea></p>';
-		echo '</div>';
-
-		// Event Data
-		$event_data = get_post_meta( $post->ID, '_ks_event_data', true );
-		echo '<div class="ks-group ks-group-Event" style="display:' . ( $template === 'Event' ? 'block' : 'none' ) . ';">';
-		echo '<h4>' . __( 'Event Details', 'knowschema' ) . '</h4>';
-		echo '<p><input type="datetime-local" name="ks_event[start_date]" value="' . esc_attr( isset( $event_data['start_date'] ) ? $event_data['start_date'] : '' ) . '" style="width:100%"> ' . __( 'Start Date', 'knowschema' ) . '</p>';
-		echo '<p><input type="text" name="ks_event[location_name]" value="' . esc_attr( isset( $event_data['location_name'] ) ? $event_data['location_name'] : '' ) . '" placeholder="Location Name" style="width:100%"></p>';
-		echo '</div>';
-
-		echo '</div>';
-
+				echo '<div id="ks-readiness-badge" style="margin-bottom:15px; display:none;">';
+				echo '<span class="ks-badge" style="padding:5px 10px; border-radius:3px; color:#fff; font-weight:bold;"></span>';
+				echo '<ul class="ks-missing-fields" style="font-size:11px; margin-top:5px; color:#666;"></ul>';
+				echo '</div>';
+		
+				// Template Specific Data
+				echo '<div id="ks-template-data" style="margin-top:20px;">';
+				
+				// Product Data
+				$product_data = get_post_meta( $post->ID, '_ks_product_data', true );
+				echo '<div class="ks-group ks-group-Product" style="display:' . ( $template === 'Product' ? 'block' : 'none' ) . ';">';
+				echo '<h4>' . __( 'Product Details', 'knowschema' ) . '</h4>';
+				echo '<p><input type="text" name="ks_product[sku]" value="' . esc_attr( isset( $product_data['sku'] ) ? $product_data['sku'] : '' ) . '" placeholder="SKU" style="width:100%"></p>';
+				echo '<p><input type="text" name="ks_product[price]" value="' . esc_attr( isset( $product_data['price'] ) ? $product_data['price'] : '' ) . '" placeholder="Price" style="width:48%"> ';
+				echo '<input type="text" name="ks_product[currency]" value="' . esc_attr( isset( $product_data['currency'] ) ? $product_data['currency'] : 'USD' ) . '" placeholder="Currency (USD)" style="width:48%"></p>';
+				echo '</div>';
+		
+				// Review Data
+				$review_data = get_post_meta( $post->ID, '_ks_review_data', true );
+				echo '<div class="ks-group ks-group-Review" style="display:' . ( $template === 'Review' ? 'block' : 'none' ) . ';">';
+				echo '<h4>' . __( 'Review Details', 'knowschema' ) . '</h4>';
+				echo '<p><input type="number" name="ks_review[rating]" value="' . esc_attr( isset( $review_data['rating'] ) ? $review_data['rating'] : '5' ) . '" min="1" max="5" style="width:100px"> ' . __( 'Rating (1-5)', 'knowschema' ) . '</p>';
+				echo '<p><textarea name="ks_review[body]" placeholder="Review Summary" style="width:100%">' . esc_textarea( isset( $review_data['body'] ) ? $review_data['body'] : '' ) . '</textarea></p>';
+				echo '</div>';
+		
+				// Event Data
+				$event_data = get_post_meta( $post->ID, '_ks_event_data', true );
+				echo '<div class="ks-group ks-group-Event" style="display:' . ( $template === 'Event' ? 'block' : 'none' ) . ';">';
+				echo '<h4>' . __( 'Event Details', 'knowschema' ) . '</h4>';
+				echo '<p><input type="datetime-local" name="ks_event[start_date]" value="' . esc_attr( isset( $event_data['start_date'] ) ? $event_data['start_date'] : '' ) . '" style="width:100%"> ' . __( 'Start Date', 'knowschema' ) . '</p>';
+				echo '<p><input type="text" name="ks_event[location_name]" value="' . esc_attr( isset( $event_data['location_name'] ) ? $event_data['location_name'] : '' ) . '" placeholder="Location Name" style="width:100%"></p>';
+				echo '</div>';
+		
+				// Recipe Data
+				$recipe_data = get_post_meta( $post->ID, '_ks_recipe_data', true );
+				echo '<div class="ks-group ks-group-Recipe" style="display:' . ( $template === 'Recipe' ? 'block' : 'none' ) . ';">';
+				echo '<h4>' . __( 'Recipe Details', 'knowschema' ) . '</h4>';
+				echo '<p><textarea name="ks_recipe[ingredients]" placeholder="Ingredients (one per line)" style="width:100%; height:100px;">' . esc_textarea( isset( $recipe_data['ingredients'] ) ? $recipe_data['ingredients'] : '' ) . '</textarea></p>';
+				echo '<p><textarea name="ks_recipe[instructions]" placeholder="Instructions (one per line)" style="width:100%; height:100px;">' . esc_textarea( isset( $recipe_data['instructions'] ) ? $recipe_data['instructions'] : '' ) . '</textarea></p>';
+				echo '</div>';
+		
+				// SoftwareApplication Data
+				$software_data = get_post_meta( $post->ID, '_ks_software_data', true );
+				echo '<div class="ks-group ks-group-SoftwareApplication" style="display:' . ( $template === 'SoftwareApplication' ? 'block' : 'none' ) . ';">';
+				echo '<h4>' . __( 'Software Application Details', 'knowschema' ) . '</h4>';
+				echo '<p><input type="text" name="ks_software[os]" value="' . esc_attr( isset( $software_data['os'] ) ? $software_data['os'] : '' ) . '" placeholder="Operating System" style="width:100%"></p>';
+				echo '<p><input type="text" name="ks_software[category]" value="' . esc_attr( isset( $software_data['category'] ) ? $software_data['category'] : '' ) . '" placeholder="Category (e.g. BusinessApplication)" style="width:100%"></p>';
+				echo '</div>';
+		
+				// VideoObject Data
+				$video_data = get_post_meta( $post->ID, '_ks_video_data', true );
+				echo '<div class="ks-group ks-group-VideoObject" style="display:' . ( $template === 'VideoObject' ? 'block' : 'none' ) . ';">';
+				echo '<h4>' . __( 'Video Details', 'knowschema' ) . '</h4>';
+				echo '<p><input type="url" name="ks_video[content_url]" value="' . esc_attr( isset( $video_data['content_url'] ) ? $video_data['content_url'] : '' ) . '" placeholder="Video Content URL" style="width:100%"></p>';
+				echo '<p><input type="url" name="ks_video[embed_url]" value="' . esc_attr( isset( $video_data['embed_url'] ) ? $video_data['embed_url'] : '' ) . '" placeholder="Embed URL" style="width:100%"></p>';
+				echo '</div>';
+		
+				echo '</div>';
 		// FAQ Editor (Simplified)
 		$faqs = get_post_meta( $post->ID, '_ks_faqs', true );
 		if ( ! is_array( $faqs ) ) { $faqs = array(); }
@@ -167,6 +193,19 @@ class Metabox {
 		}
 		if ( isset( $_POST['ks_event'] ) ) {
 			update_post_meta( $post_id, '_ks_event_data', array_map( 'sanitize_text_field', $_POST['ks_event'] ) );
+		}
+		if ( isset( $_POST['ks_recipe'] ) ) {
+			$recipe = $_POST['ks_recipe'];
+			update_post_meta( $post_id, '_ks_recipe_data', array(
+				'ingredients'  => sanitize_textarea_field( $recipe['ingredients'] ),
+				'instructions' => sanitize_textarea_field( $recipe['instructions'] ),
+			) );
+		}
+		if ( isset( $_POST['ks_software'] ) ) {
+			update_post_meta( $post_id, '_ks_software_data', array_map( 'sanitize_text_field', $_POST['ks_software'] ) );
+		}
+		if ( isset( $_POST['ks_video'] ) ) {
+			update_post_meta( $post_id, '_ks_video_data', array_map( 'esc_url_raw', $_POST['ks_video'] ) );
 		}
 	}
 
