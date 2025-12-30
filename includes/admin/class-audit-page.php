@@ -18,6 +18,13 @@ class Audit_Page {
 			<h1><?php _e( 'Site Audit', 'knowschema' ); ?></h1>
 			<p><?php _e( 'Overview of schema coverage and readiness across your site.', 'knowschema' ); ?></p>
 			
+			<div class="card" style="margin-bottom: 20px; padding: 10px;">
+				<strong><?php _e( 'Status Legend:', 'knowschema' ); ?></strong>
+				<span style="margin-left:15px;"><?php echo $this->render_status_pill( 'green' ); ?> <?php _e( 'Ready (Rich Results likely)', 'knowschema' ); ?></span>
+				<span style="margin-left:15px;"><?php echo $this->render_status_pill( 'amber' ); ?> <?php _e( 'Recommended fields missing', 'knowschema' ); ?></span>
+				<span style="margin-left:15px;"><?php echo $this->render_status_pill( 'red' ); ?> <?php _e( 'Required fields missing', 'knowschema' ); ?></span>
+			</div>
+			
 			<table class="wp-list-table widefat fixed striped">
 				<thead>
 					<tr>

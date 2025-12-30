@@ -18,6 +18,7 @@ class Entity_Repository {
 			'qid'     => get_post_meta( $post->ID, '_ks_entity_qid', true ),
 			'sameAs'  => get_post_meta( $post->ID, '_ks_entity_sameas', true ),
 			'image'   => get_the_post_thumbnail_url( $post->ID, 'full' ),
+			'json_data' => get_post_meta( $post->ID, '_ks_entity_json_data', true ),
 		);
 	}
 

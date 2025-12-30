@@ -59,6 +59,18 @@ class Admin_Pages {
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+			
+			<div class="card" style="max-width: 100%; margin-top: 20px; padding: 15px;">
+				<h2><?php _e( 'Welcome to KnowSchema', 'knowschema' ); ?></h2>
+				<p><?php _e( 'KnowSchema helps you build a precise Knowledge Graph for your website using JSON-LD.', 'knowschema' ); ?></p>
+				<h3><?php _e( 'How to use this plugin:', 'knowschema' ); ?></h3>
+				<ol>
+					<li><strong><?php _e( 'Define Entities:', 'knowschema' ); ?></strong> <?php _e( 'Go to "Schema Entities" to create your Organization or Person record. You can paste advanced JSON there if needed.', 'knowschema' ); ?></li>
+					<li><strong><?php _e( 'Set Primary Entity:', 'knowschema' ); ?></strong> <?php _e( 'Select that entity below as the "Primary Entity". This links all your content to you.', 'knowschema' ); ?></li>
+					<li><strong><?php _e( 'Configure Content:', 'knowschema' ); ?></strong> <?php _e( 'Edit your Posts and Pages. Scroll down to the KnowSchema box to select a template (e.g., Article, Product) and fill in details.', 'knowschema' ); ?></li>
+				</ol>
+			</div>
+
 			<form action="options.php" method="post">
 				<?php
 				settings_fields( 'knowschema_options' );

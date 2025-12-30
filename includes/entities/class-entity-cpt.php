@@ -105,6 +105,16 @@ class Entity_CPT {
 			<label for="ks_entity_sameas"><strong><?php _e( 'SameAs Links (one per line)', 'knowschema' ); ?></strong></label><br>
 			<textarea name="ks_entity_sameas" id="ks_entity_sameas" rows="4" style="width:100%"><?php echo esc_textarea( is_array( $sameas ) ? implode( "\n", $sameas ) : $sameas ); ?></textarea>
 		</p>
+		<p>
+			<label for="ks_entity_json_data"><strong><?php _e( 'Extended Schema (JSON)', 'knowschema' ); ?></strong></label><br>
+			<span class="description"><?php _e( 'Paste raw JSON here for advanced fields (e.g., worksFor, alumniOf). This will merge with the fields above.', 'knowschema' ); ?></span><br>
+			<?php 
+			$json_data = get_post_meta( $post->ID, '_ks_entity_json_data', true );
+			// If it's an array (old data?), encode it. If string, keep it.
+			if ( is_array( $json_data ) ) { $json_data = wp_json_encode( $json_data, JSON_PRETTY_PRINT ); }
+			?>
+			<textarea name="ks_entity_json_data" id="ks_entity_json_data" rows="10" style="width:100%; font-family:monospace;" placeholder='{ "worksFor": [ ... ] }'><?php echo esc_textarea( $json_data ); ?></textarea>
+		</p>
 		<?php
 	}
 
@@ -128,6 +138,20 @@ class Entity_CPT {
 		if ( isset( $_POST['ks_entity_sameas'] ) ) {
 			$sameas = array_filter( array_map( 'esc_url_raw', explode( "\n", str_replace( "\r", '', $_POST['ks_entity_sameas'] ) ) ) );
 			update_post_meta( $post_id, '_ks_entity_sameas', $sameas );
+		}
+		if ( isset( $_POST['ks_entity_json_data'] ) ) {
+			// Validate JSON before saving
+			$json_raw = wp_unslash( $_POST['ks_entity_json_data'] );
+			$json_decoded = json_decode( $json_raw, true );
+			if ( json_last_error() === JSON_ERROR_NONE || empty( $json_raw ) ) {
+				// We save it as a string to preserve formatting/order, or array?
+				// Saving as array is safer for usage.
+				if ( ! empty( $json_decoded ) ) {
+					update_post_meta( $post_id, '_ks_entity_json_data', $json_decoded ); 
+				} else {
+					delete_post_meta( $post_id, '_ks_entity_json_data' );
+				}
+			}
 		}
 	}
 }

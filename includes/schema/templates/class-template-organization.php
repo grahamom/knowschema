@@ -50,6 +50,13 @@ class Template_Organization {
 				if ( ! isset( $data['sameAs'] ) ) { $data['sameAs'] = array(); }
 				$data['sameAs'][] = 'https://www.wikidata.org/wiki/' . $entity['qid'];
 			}
+
+			// Merge Extended Schema (JSON overrides)
+			if ( ! empty( $entity['json_data'] ) && is_array( $entity['json_data'] ) ) {
+				// Use array_replace to allow the JSON to strictly override properties (like sameAs)
+				$data = array_replace( $data, $entity['json_data'] );
+			}
+
 			return $data;
 		}
 
