@@ -52,8 +52,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: knowschema-plugin
-          path: build/knowschema.zip
+          name: knowschema
+          path: build/knowschema/
 
       - name: Release
         if: github.event_name == 'release'
