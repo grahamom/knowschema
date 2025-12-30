@@ -94,7 +94,7 @@ To test the Wikidata API logic, you would implement `KnowSchema\Wikidata\Wikidat
 
 ### Requirements
 
-*   PHP 8.0+
+*   PHP 7.4+
 *   WordPress 6.2+
 *   Composer
 

@@ -5,7 +5,7 @@
  * Description:       WordPress Schema Manager with AI Automation and Entity Publishing.
  * Version:           2.0.0
  * Requires at least: 6.2
- * Requires PHP:      8.0
+ * Requires PHP:      7.4
  * Author:            Graham
  * Author URI:        https://graham.om
  * Text Domain:       knowschema

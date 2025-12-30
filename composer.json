@@ -3,7 +3,7 @@
     "description": "WordPress Schema Manager with AI Automation and Entity Publishing.",
     "type": "wordpress-plugin",
     "require": {
-        "php": ">=8.0"
+        "php": ">=7.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
